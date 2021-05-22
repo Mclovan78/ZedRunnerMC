@@ -1,0 +1,21 @@
+create table horses (
+    bloodline varchar(100),
+    breed_type varchar(100),
+    career_first INT,
+    career_second INT,
+    career_third INT,
+    genotype VARCHAR(50),
+    hashinfo_color VARCHAR(100),
+    hashinfo_hexcode VARCHAR(100),
+    hashinfo_name VARCHAR(1000),
+    horse_id INT,
+    horse_type  VARCHAR(100),
+    img_url VARCHAR(100) ,
+    number_of_races  INT, 
+    owner  VARCHAR(100),
+    super_coat  TINYINT,
+    tx  VARCHAR(100),
+    tx_date  VARCHAR(100),
+    win_rate  INT,
+    PRIMARY KEY(horse_id)
+)

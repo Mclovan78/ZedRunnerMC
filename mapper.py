@@ -64,11 +64,9 @@ class Mapper:
         for d in horse_datas:
             bloodline = d['bloodline']
             breed_type = d['breed_type']
-            breeding_counter = d['breeding_counter']
             career_first = d['career']['first']
             career_second = d['career']['second']
             career_third  = d['career']['third']
-            c=d['class']
             genotype = d['genotype']
             hashinfo_color = d['hash_info']['color']
             hashinfo_hexcode = d['hash_info']['hex_code']
@@ -76,36 +74,17 @@ class Mapper:
             horse_id=d['horse_id']
             horse_type= d['horse_type']
             img_url=d['img_url']
-            is_approved_for_racing= d['is_approved_for_racing']
-            is_in_stud= d['is_in_stud']
-            is_on_racing_contract=d['is_on_racing_contract']
-            last_stud_duration= d['last_stud_duration']
-            last_stud_timestamp= d['last_stud_timestamp']
-            mating_price =d['mating_price']
-            next_breeding_date= d['next_breeding_date']
             number_of_races= d['number_of_races']
             owner= d['owner']
-            parents_father= d['parents']['father']
-            parents_father_id = None
-            if parents_father:
-                parents_father_id = parents_father['horse_id']
-            parents_mother= d['parents']['mother']
-            parents_mother_id = None
-            if parents_mother:
-                parents_mother_id = parents_mother['horse_id']
-            rating =d['rating']
             super_coat= d['super_coat']
             tx= d['tx']
             tx_date =d['tx_date']
             win_rate=d['win_rate']
 
-            return_datas.append((bloodline , breed_type , breeding_counter ,
-                career_first , career_second , career_third  , c, genotype ,
+            return_datas.append((bloodline , breed_type ,
+                career_first , career_second , career_third, genotype ,
                 hashinfo_color , hashinfo_hexcode , hashinfo_name, horse_id,
-                horse_type, img_url, is_approved_for_racing, is_in_stud,
-                is_on_racing_contract, last_stud_duration, last_stud_timestamp, mating_price ,
-                next_breeding_date, number_of_races, owner, parents_father_id, parents_mother_id,
-                rating , super_coat, tx, tx_date , win_rate
+                horse_type, img_url, number_of_races, owner, super_coat, tx, tx_date , win_rate
                 ))
 
         return return_datas

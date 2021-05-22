@@ -1,0 +1,1 @@
+SELECT races.race_id, races.name, races_results.final_position, races_results.gate, races.length, races_results.finish_time, races_results.stable_name FROM races_results INNER JOIN races ON races_results.race_id=races.race_id  WHERE horse_id = 24074
