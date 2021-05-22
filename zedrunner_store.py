@@ -54,7 +54,7 @@ class ZedRunnerStore:
                 connection.commit()
 
     def store_races(self, races_data):
-        list_of_ids = [d[4] for d in races_data]
+        list_of_ids = [d[10] for d in races_data]
 
         format_strings = ','.join(['%s'] * len(list_of_ids))
         delete_races_query = "DELETE From races where race_id in (%s)"%format_strings
@@ -137,7 +137,7 @@ class ZedRunnerStore:
 
     def store_stables(self, horse_datas):
         print(horse_datas)
-        list_of_ids = [d[11] for d in horse_datas]
+        list_of_ids = [d[9] for d in horse_datas]
         format_strings = ','.join(['%s'] * len(list_of_ids))
         delete_horses_query = """
         DELETE FROM stables where horse_id in (%s)

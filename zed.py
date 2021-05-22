@@ -5,7 +5,6 @@ import argparse
 import logging.config
 import logging
 from mapper import Mapper
-from zednotification_bot import Notification
 from config import API_RETRY_COUNT
 
 class ZedRun:
@@ -204,15 +203,11 @@ def main(type, forced):
             run.fetch_stable_data(forced)
 
         success_message = message + " completed successfully."
-        Notification.send_message(success_message)
         logger.info(success_message)
     except Exception as e:       
         failure_message = message + ' failed.'
         stacktrace = traceback.format_exc()
         logger.error(f"Error: {failure_message} Reason: {stacktrace}")
-        Notification.send_message(f"Error: {failure_message} Reason: {stacktrace}")
-
-
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
