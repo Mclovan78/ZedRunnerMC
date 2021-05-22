@@ -11,7 +11,7 @@ Retrieves horse racing data by calling zed.run apis and store them to MySQL Data
 ## Installation
 
 ```bash
-git clone https://github.com/KshitizGIT/ZedRunner.git
+git clone https://github.com/ttruty/ZedRunner.git
 cd ZedRunner
 pipenv install --deploy
 ```
