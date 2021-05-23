@@ -30,7 +30,7 @@ class ZedRunnerStore:
                     return False
 
     def store_horses(self, horse_datas):
-        print(horse_datas)
+        #print(horse_datas)
         list_of_ids = [d[9] for d in horse_datas]
         format_strings = ','.join(['%s'] * len(list_of_ids))
         delete_horses_query = """
@@ -136,7 +136,7 @@ class ZedRunnerStore:
                     return False
 
     def store_stables(self, horse_datas):
-        print(horse_datas)
+        #print(horse_datas)
         list_of_ids = [d[9] for d in horse_datas]
         format_strings = ','.join(['%s'] * len(list_of_ids))
         delete_horses_query = """

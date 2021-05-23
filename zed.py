@@ -100,7 +100,7 @@ class ZedRun:
             response = self.make_api_calls(url, method='POST', body={'query': after_query})
             self.logger.debug(f"Response: status_code: {response.status_code}, context: {response.text}")
             jsondata = response.json()
-            self.logger.debug(jsondata)
+            #self.logger.debug(jsondata)
             datas = jsondata['data']['get_race_results']['edges']
 
             cursor ='"'  + jsondata['data']['get_race_results']['page_info']['end_cursor'] + '"'
@@ -140,7 +140,7 @@ class ZedRun:
             offset = offset + count
             first_horse = jsondata[0]
             
-            self.logger.info(jsondata)
+            #self.logger.info(jsondata)
 
             if forced or not self.store.horse_exists(first_horse):
                 horse_datas = self.mapper.map_horses_data(jsondata)
