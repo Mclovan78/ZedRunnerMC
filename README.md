@@ -1,7 +1,7 @@
 # ZedRunner
 
 Retrieves horse racing data by calling zed.run apis and store them to MySQL Database.
-
+> API documentation is here: https://docs.zed.run/racing/getraceresults
 
 ## Prerequisites
 1. python
