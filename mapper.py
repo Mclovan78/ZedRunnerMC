@@ -38,10 +38,7 @@ class Mapper:
                 gender = horse['gender']
                 breed_type = horse['breed_type']
                 gen = horse['gen']
-                races = horse['races']
                 coat = horse['coat']
-                win_rate = horse['win_rate']
-                career = horse['career']
                 hex_color = horse['hex_color']
                 img_url = horse['img_url']
                 horse_class = horse['class']
@@ -50,8 +47,7 @@ class Mapper:
                                     finish_time , final_position ,
                                     name , gate , owner_address ,
                                     bloodline , gender , breed_type ,
-                                    gen , races , coat , win_rate ,
-                                    career , hex_color , img_url ,
+                                    gen , coat, hex_color , img_url ,
                                     horse_class , stable_name ))
 
         return {"races": return_races, "races_results": return_races_results }

@@ -37,7 +37,7 @@ class ZedRunnerStore:
         DELETE FROM horses where horse_id in (%s)
         """%format_strings
         insert_horses_query = """
-        INSERT INTO horses(bloodline, breed_type , career_first ,
+        INSERT INGORE INTO horses(bloodline, breed_type , career_first ,
                         career_second , career_third , genotype, hashinfo_color ,
                         hashinfo_hexcode , hashinfo_name , horse_id , horse_type , img_url
                         , number_of_races , 
@@ -48,7 +48,7 @@ class ZedRunnerStore:
         with self.__get_connection() as connection:
             with connection.cursor() as cursor:
                 self.logger.debug(f"Query: {delete_horses_query} with parameters {tuple(list_of_ids)}")
-                cursor.execute(delete_horses_query,tuple(list_of_ids))
+                #cursor.execute(delete_horses_query,tuple(list_of_ids))
                 self.logger.debug(f"Query: {insert_horses_query} with parameters {horse_datas}")
                 cursor.executemany(insert_horses_query, horse_datas)
                 connection.commit()
@@ -59,7 +59,7 @@ class ZedRunnerStore:
         format_strings = ','.join(['%s'] * len(list_of_ids))
         delete_races_query = "DELETE From races where race_id in (%s)"%format_strings
 
-        insert_races_query = """INSERT INTO races(city, class, country_code, fee,
+        insert_races_query = """INSERT IGNORE INTO races(city, class, country_code, fee,
                           length, name, prizepool_first,
                           prizepool_second, prizepool_third,
                           prizepool_total , race_id, start_time,
@@ -70,7 +70,7 @@ class ZedRunnerStore:
         with self.__get_connection() as connection:
             with connection.cursor() as cursor:
                 self.logger.debug(f"Query: {delete_races_query} with parameters {tuple(list_of_ids)}")
-                cursor.execute(delete_races_query, tuple(list_of_ids) )
+                #cursor.execute(delete_races_query, tuple(list_of_ids) )
                 self.logger.debug(f"Query: {insert_races_query} with parameters {races_data}")
                 cursor.executemany(insert_races_query, races_data)
                 connection.commit()
@@ -85,10 +85,9 @@ class ZedRunnerStore:
                                    finish_time , final_position ,
                                    name , gate , owner_address ,
                                    bloodline , gender , breed_type ,
-                                   gen , races , coat , win_rate ,
-                                   career , hex_color , img_url ,
+                                   gen, coat , hex_color , img_url ,
                                    class , stable_name )
-        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         with self.__get_connection() as connection:
             with connection.cursor() as cursor:

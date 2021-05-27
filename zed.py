@@ -43,7 +43,7 @@ class ZedRun:
         cursor = 'null'
 
         query ="""query{
-        get_race_results(first:500, input: {only_my_racehorses: false}, after: {0}) {
+        get_race_results(first:1000, input: {only_my_racehorses: false, classes: [0,1,2,3,4]}, after: {0}) {
             edges {
             cursor
             node {
@@ -75,10 +75,7 @@ class ZedRun:
                 gender
                 breed_type
                 gen
-                races
                 coat
-                win_rate
-                career
                 hex_color
                 img_url
                 class
