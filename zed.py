@@ -41,9 +41,8 @@ class ZedRun:
     def fetch_race_data(self, forced=False):
         url = 'https://zed-ql.zed.run/graphql/'
         cursor = 'null'
-
         query ="""query{
-        get_race_results(first:1000, input: {only_my_racehorses: false, classes: [0,1,2,3,4]}, after: {0}) {
+        get_race_results(first:10, input: {only_my_racehorses: false, classes: [0,1,2,3,4,5]}, after: {0}) {
             edges {
             cursor
             node {
@@ -97,7 +96,7 @@ class ZedRun:
             response = self.make_api_calls(url, method='POST', body={'query': after_query})
             self.logger.debug(f"Response: status_code: {response.status_code}, context: {response.text}")
             jsondata = response.json()
-            #self.logger.debug(jsondata)
+            self.logger.debug(jsondata)
             datas = jsondata['data']['get_race_results']['edges']
 
             cursor ='"'  + jsondata['data']['get_race_results']['page_info']['end_cursor'] + '"'
