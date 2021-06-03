@@ -29,6 +29,46 @@ class ZedRunnerStore:
                 else:
                     return False
 
+    def get_horse_ids(self):
+        query_horse = "SELECT horse_id, horse_type from horses"
+        with self.__get_connection() as connection:
+                with connection.cursor() as cursor:
+                    self.logger.debug(f"Query: {query_horse}")
+                    cursor.execute(query_horse)
+                    data = cursor.fetchall()
+                    return data
+
+    def horse_offspring(self, horse_info):
+            query_horse = "SELECT 1 from horses where horse_id = %s"%(horse_info['horse_id'])
+
+            with self.__get_connection() as connection:
+                with connection.cursor() as cursor:
+                    self.logger.debug(f"Query: {query_horse}")
+                    cursor.execute(query_horse)
+                    data = cursor.fetchall()
+                    if data:
+                        self.logger.info("Horse information already exists")
+                        return True
+                    else:
+                        return False
+
+    def store_offspring(self, parent, child_data, parent_type):
+        if parent_type in ['Colt', 'Stallion']:
+            parent_type = "parents_father"
+        if parent_type in ['Filly', 'Mare']:
+            parent_type = "parents_mother"
+        print(len(child_data['horses']))
+        if (len(child_data['horses']) > 0):
+            print(child_data)
+            for d in child_data['horses']:
+                print(d)
+                offspring_query = f"UPDATE horses SET {parent_type} = {parent} WHERE horse_id = {d['horse_id']}"
+                with self.__get_connection() as connection:
+                    with connection.cursor() as cursor:
+                        self.logger.debug(f"Query: {offspring_query}")
+                        cursor.execute(offspring_query)
+                        connection.commit()
+
     def store_horses(self, horse_datas):
         #print(horse_datas)
         list_of_ids = [d[9] for d in horse_datas]
@@ -37,7 +77,7 @@ class ZedRunnerStore:
         DELETE FROM horses where horse_id in (%s)
         """%format_strings
         insert_horses_query = """
-        INSERT INGORE INTO horses(bloodline, breed_type , career_first ,
+        INSERT INTO horses(bloodline, breed_type , career_first ,
                         career_second , career_third , genotype, hashinfo_color ,
                         hashinfo_hexcode , hashinfo_name , horse_id , horse_type , img_url
                         , number_of_races , 
@@ -48,7 +88,7 @@ class ZedRunnerStore:
         with self.__get_connection() as connection:
             with connection.cursor() as cursor:
                 self.logger.debug(f"Query: {delete_horses_query} with parameters {tuple(list_of_ids)}")
-                #cursor.execute(delete_horses_query,tuple(list_of_ids))
+                cursor.execute(delete_horses_query,tuple(list_of_ids))
                 self.logger.debug(f"Query: {insert_horses_query} with parameters {horse_datas}")
                 cursor.executemany(insert_horses_query, horse_datas)
                 connection.commit()
@@ -59,7 +99,7 @@ class ZedRunnerStore:
         format_strings = ','.join(['%s'] * len(list_of_ids))
         delete_races_query = "DELETE From races where race_id in (%s)"%format_strings
 
-        insert_races_query = """INSERT IGNORE INTO races(city, class, country_code, fee,
+        insert_races_query = """INSERT INTO races(city, class, country_code, fee,
                           length, name, prizepool_first,
                           prizepool_second, prizepool_third,
                           prizepool_total , race_id, start_time,
@@ -70,7 +110,7 @@ class ZedRunnerStore:
         with self.__get_connection() as connection:
             with connection.cursor() as cursor:
                 self.logger.debug(f"Query: {delete_races_query} with parameters {tuple(list_of_ids)}")
-                #cursor.execute(delete_races_query, tuple(list_of_ids) )
+                cursor.execute(delete_races_query, tuple(list_of_ids) )
                 self.logger.debug(f"Query: {insert_races_query} with parameters {races_data}")
                 cursor.executemany(insert_races_query, races_data)
                 connection.commit()
@@ -136,18 +176,20 @@ class ZedRunnerStore:
 
     def store_stables(self, horse_datas):
         #print(horse_datas)
-        list_of_ids = [d[9] for d in horse_datas]
+        list_of_ids = [d[11] for d in horse_datas]
         format_strings = ','.join(['%s'] * len(list_of_ids))
         delete_horses_query = """
         DELETE FROM stables where horse_id in (%s)
         """%format_strings
         insert_horses_query = """
-        INSERT INTO stables(bloodline, breed_type , career_first ,
-                        career_second , career_third , genotype, hashinfo_color ,
-                        hashinfo_hexcode , hashinfo_name , horse_id , horse_type , img_url, number_of_races , 
-                        owner, super_coat  ,
+        INSERT INTO stables(bloodline, breed_type , breeding_counter , career_first ,
+                        career_second , career_third , class , genotype, hashinfo_color ,
+                        hashinfo_hexcode , hashinfo_name , horse_id , horse_type , img_url,
+                        is_approved_for_racing, is_in_stud, is_on_racing_contract , last_stud_duration,
+                        last_stud_timestamp , mating_price , next_breeding_date , number_of_races , 
+                        owner , parents_father  , parents_mother  , rating  , super_coat  ,
                         tx , tx_date ,win_rate  )
-        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         with self.__get_connection() as connection:
             with connection.cursor() as cursor:

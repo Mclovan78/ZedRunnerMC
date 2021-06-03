@@ -170,7 +170,8 @@ class ZedRun:
                 first_horse = jsondata[0]
 
                 if forced or not self.store.stable_exists(first_horse):
-                    horse_datas = self.mapper.map_horses_data(jsondata)
+                    horse_datas = self.mapper.map_stable_data(jsondata)
+                    #horse_datas = self.mapper.map_horses_data(jsondata)
                     self.logger.info('Store stable information to database.')
                     self.store.store_stables(horse_datas)
                     break_loop = False
@@ -178,13 +179,30 @@ class ZedRun:
                 if break_loop:
                     break
 
+    def fetch_offspring_data(self,forced=False):
+        datas = self.store.get_horse_ids()
+        # horse_ids = [d[0] for d in datas]
+        # type = [d[1] for d in datas]
+        
+        url = 'https://api.zed.run/api/v1/horses/offsprings/{0}'
+        for parent_id, type in datas:
+            self.logger.info(f"Fetching offspring information for horse id: {parent_id} of type {type}")
+            current_url = url.format(parent_id)
+            self.logger.info(f"Calling endpoint: {current_url}")
+            response = self.make_api_calls(current_url,method='GET')
+            child_datas=response.json()
+            self.logger.debug(f"Response from api: {child_datas}")
+
+            self.store.store_offspring(parent_id, child_datas, type)
+            self.logger.info('Store offspring information to database.')
+
 
 def main(type, forced):
     logging.config.fileConfig('logging.conf')
     message = f"Zed Run with settings Type:'{type}' and Forced: {forced}"
     logger = logging.getLogger('zedrunner')
     try:
-        if(type not in ['horse', 'race', 'stable']):
+        if(type not in ['horse', 'race', 'stable', 'offspring']):
             print(f"'{type}' is not supported")
             return
 
@@ -197,6 +215,8 @@ def main(type, forced):
             run.fetch_race_data(forced)
         elif(type == 'stable'):
             run.fetch_stable_data(forced)
+        elif(type == 'offspring'):
+            run.fetch_offspring_data(forced)
 
         success_message = message + " completed successfully."
         logger.info(success_message)
