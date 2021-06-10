@@ -30,6 +30,7 @@ Also, you will need to run the scripts located inside the `migrations` folder to
 pipenv run python zed.py --type horse
 pipenv run python zed.py --type race --force True
 pipenv run python zed.py --type stable
+pipenv run python zed.py --type offspring
 ```
 
 ## Configuration
