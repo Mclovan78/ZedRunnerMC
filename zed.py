@@ -189,12 +189,16 @@ class ZedRun:
             self.logger.info(f"Fetching offspring information for horse id: {parent_id} of type {type}")
             current_url = url.format(parent_id)
             self.logger.info(f"Calling endpoint: {current_url}")
-            response = self.make_api_calls(current_url,method='GET')
-            child_datas=response.json()
-            self.logger.debug(f"Response from api: {child_datas}")
+            try:
+                response = self.make_api_calls(current_url,method='GET')
+                child_datas=response.json()
+                self.logger.debug(f"Response from api: {child_datas}")
 
-            self.store.store_offspring(parent_id, child_datas, type)
-            self.logger.info('Store offspring information to database.')
+                self.store.store_offspring(parent_id, child_datas, type)
+                self.logger.info('Store offspring information to database.')
+            except Exception as e:
+                self.logger.info('Offspring fetch error:', e)
+
 
 
 def main(type, forced):
